@@ -1,0 +1,6 @@
+*.pyc
+*.retry
+*.swp
+ansible.cfg
+group_vars/*.*
+host_vars/*.*

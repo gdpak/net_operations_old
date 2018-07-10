@@ -1,0 +1,4 @@
+---
+- hosts: csr01
+  roles:
+    - net_operations

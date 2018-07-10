@@ -1,0 +1,16 @@
+---
+# defaults file for net_operations
+{
+  "net_operation": {
+    "services" : {
+        "l3acl" : {
+            "id" : 193
+        },
+        "output" : {
+            "filename" : "packet_dict_193.json",
+            "path"     : "~/net_op/"
+        }
+    }
+  }
+}
+
