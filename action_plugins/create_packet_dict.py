@@ -22,9 +22,9 @@ import os
 import time
 import re
 import hashlib
-import shutil
+import q
 
-from ansible.module_utils._text import to_bytes
+from ansible.module_utils._text import to_bytes, to_text
 from ansible.module_utils.connection import Connection
 from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
@@ -108,14 +108,67 @@ class ActionModule(ActionBase):
         return result
 
     def _create_packet_dict(self, cmd_out):
-        ext_acl_re = re.compile('Extended IP access list', re.I)
+        import warnings
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            from trigger.acl import parse
+        import netaddr
+        import json
+        import uuid
 
+        # pd is list of dictionary of packets
+        pd = []
         lines = cmd_out.split('\n')
         for index, line in enumerate(lines):
-            if index == 0:
-                
+            line = to_bytes(line, errors='surrogate_or_strict')
+            pd_it = {}
+            try:
+                p = parse(line)
+            except Exception as e:
+                q(e)
+                continue
 
-        return "\n".join(lines)
+            if p.terms:
+                match = p.terms[0].match
+                for key in match:
+                    if key == 'source-address':
+                        for m in match["source-address"]:
+                            v = netaddr.IPNetwork(str(m))
+                            # Return the host in middle of subnet
+                            size_subnet = v.size
+                            host_index = int(size_subnet/2)
+                            pd_it["src"] = str(v[host_index])
+                    if key == 'destination-address':
+                        for m in match["destination-address"]:
+                            v = netaddr.IPNetwork(str(m))
+                            # Return the host in middle of subnet
+                            size_subnet = v.size
+                            host_index = int(size_subnet/2)
+                            pd_it["dst"] = str(v[host_index])
+                    if key == 'protocol':
+                        for m in match['protocol']:
+                            pd_it["proto"] = str(m)
+                    if key == 'destination-port':
+                        for m in match["destination-port"]:
+                            pd_it['dst_port'] = str(m)
+                    if key == 'source-port':
+                        for m in match["source-port"]:
+                            pd_it['src_port'] = str(m)
+
+                action = p.terms[0].action
+                for act in action:
+                    pd_it["action"] = act
+
+            if pd_it is not None:
+                if not "dst" in pd_it:
+                    pd_it["dst"] = "any"
+                if not "src" in pd_it:
+                    pd_it["src"] = "any"
+                pd_it["id"] = str(index) + '-' + str(uuid.uuid4())[:8]
+                pd.append(pd_it)
+
+        return json.dumps(pd, indent=4)
+
 
     def _write_packet_dict(self, dest, contents):
         # Check for Idempotency
