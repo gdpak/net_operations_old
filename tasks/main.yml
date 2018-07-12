@@ -1,15 +1,13 @@
 ---
 # tasks file for net_operations
-- name: "check for required fact: "
-  fail:
-    msg: "Missing required fact: service id "
-  when: not net_operation.services
+- name: "Include dut playbook"
+  include_tasks: dut.yml
+  when: device_role == 'dut'
 
-- name: include device role specific tasks
-  include_tasks: "{{ item }}"
-  with_first_found:
-    - files:
-        - generate_packet_dict.yml
-      paths:
-        - "{{ playbook_dir }}/providers/{{ ansible_network_os }}"
-        - "{{ role_path }}/providers/{{ ansible_network_os }}"
+- name: "Include traffic source device playbook"
+  include_tasks: source.yml
+  when: device_role == 'source'
+
+- name: "Include traffic sink device platbook"
+  include_tasks: sink.yml
+  when: device_role == 'sink'

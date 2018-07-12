@@ -2,3 +2,11 @@
 - hosts: csr01
   roles:
     - net_operations
+  vars:
+    device_role: 'dut'
+
+- hosts: tgn1
+  roles:
+    - net_operations
+  vars:
+    device_role: 'source'

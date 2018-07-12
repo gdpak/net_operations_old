@@ -1,0 +1,12 @@
+---
+# Centos Provider for generating traffic from linux system
+#
+- name: Copy packet dictionary from ansible controller to traffic source
+  copy:
+    src: "{{ net_operation.services.output.path }}/{{ net_operation.services.output.filename }}"
+    dest: "/tmp/{{ net_operation.services.output.filename }}"
+
+- name: Send traffic from port
+  send_traffic:
+      src: "/tmp/{{ net_operation.services.output.filename }}"
+      port: 'enp0s16'
