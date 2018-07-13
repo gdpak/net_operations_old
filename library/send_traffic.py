@@ -48,14 +48,15 @@ import sys
 import os
 import json
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_text
-from ansible.utils.path import unfrackpath, makedirs_safe
+from ansible.module_utils._text import to_text, to_bytes
 
 class TrafficGen(object):
-    def __init__(self, module, pd_path, port):
+    def __init__(self, module, pd_path, port, gw, any_dest):
         self._pd = pd_path
         self._port = port
         self._module = module
+        self._wildcard_dest = any_dest
+        self._gw = gw
 
     def load_packets(self, packet_src):
         if os.path.exists(packet_src):
@@ -70,14 +71,53 @@ class TrafficGen(object):
         from scapy.all import *
 
         for packet in self._packets:
-            if packet['src']:
+            if packet['src'] != 'any':
                 frame = IP(src=str(packet['src']))
+            else:
+                frame = IP(src=self._gw) #FIXME
+            if packet['dst'] != 'any':
+                frame.dst = packet['dst']
+            else:
+                frame.dst = self._wildcard_dest
+
+            if 'proto' in packet:
+                if packet['proto'] == 'tcp':
+                   if 'src_port' in packet:
+                       tcp = TCP(sport=int(packet['src_port']))
+                       if 'dst_port' in packet:
+                           tcp.dport = int(packet['dst_port'])
+                   elif 'dst_port' in packet:
+                       tcp = TCP(dport=int(packet['dst_port']))
+                   else:
+                       # FIXME
+                       tcp = TCP(dport=22)
+                   frame = frame / tcp
+    
+                if packet['proto'] == 'udp':
+                   if 'src_port' in packet:
+                       udp = UDP(sport=int(packet['src_port']))
+                       if 'dst_port' in packet:
+                           udp.dport = int(packet['dst_port'])
+                   elif 'dst_port' in packet:
+                       udp = UDP(dport=int(packet['dst_port']))
+                   else:
+                       # FIXME: what should be default port
+                       udp = UDP(dport=22)
+                   frame = frame / udp
+
+            q(frame)
+            # Now add Host route via Gateway and port of TGN
+            # Route will be deleted after exit from this process
+            conf.route.add(host=frame.dst, gw=self._gw, dev=self._port)
+            # Send packet
+            send(frame)
 
     def main(self):
         try:
             self.load_packets(self._pd)
         except Exception as e:
             raise e
+        self.send_packets()
 
 def main():
     """main entry point for module execution
@@ -85,12 +125,14 @@ def main():
     argument_spec = dict(
         src=dict(required=True, type='path'),
         port=dict(required=True),
+        gateway=dict(required=True),
+        wildcard_dest=dict(required=True)
     )
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)
 
     p = module.params
-    tg = TrafficGen(module, p['src'], p['port'])
+    tg = TrafficGen(module, p['src'], p['port'], p['gateway'], p['wildcard_dest'])
     try:
         tg.main()
     except Exception as e:

@@ -9,4 +9,7 @@
 - name: Send traffic from port
   send_traffic:
       src: "/tmp/{{ net_operation.services.output.filename }}"
-      port: 'enp0s16'
+      port: "{{ net_operation.source.port }}"
+      gateway: "{{ net_operation.source.gateway }}"
+      wildcard_dest: "{{ net_operation.source.wildcard_dest }}"
+  become: yes

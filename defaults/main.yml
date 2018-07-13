@@ -10,6 +10,11 @@
             "filename" : "packet_dict_193.json",
             "path"     : "~/net_op/"
         }
+    },
+    "source" : {
+        "port" : 'enp0s16',
+        "gateway" : '12.1.1.20',
+        "wildcard_dest" : '13.1.1.128'
     }
   }
 }
