@@ -16,11 +16,18 @@ To verify sanity of data flows, traffic should be sent from a source that is in 
 ![alt text](https://user-images.githubusercontent.com/12809431/43312593-6a6c7b0e-91ab-11e8-9861-44696af4c504.jpeg)
 
 
+Device Requirements
+--------------------
+
+- Source - If flows verification need to send packets with arbitary source ip-address, we can not not use most of the network operating system as they don't allow to send traffic with source address which is not routable. So in this case a linux host would be more suited to act as traffic source.
+- Sink - It can be be ios switch or router where we can captures flow meta-data using logs of access-lists
+
 Requirements
 ------------
-
+(Ansible Controller)
 - Ansible 2.5 or later
-- 
+- trigger
+
 
 Role Variables
 --------------
