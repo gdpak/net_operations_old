@@ -10,3 +10,9 @@
     - net_operations
   vars:
     device_role: 'source'
+
+- hosts: csr02
+  roles:
+    - net_operations
+  vars:
+    device_role: 'sink'
