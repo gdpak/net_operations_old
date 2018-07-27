@@ -13,7 +13,7 @@ Topology
 ---------
 To verify sanity of data flows, traffic should be sent from a source that is in same network zone as of a normal user of the service. Similarily based on data-path of flows, packet capture device(s) should be selected. A typical use-case of a enterprise providing internet/intranet service to its user might place a traffic generator and packet capture devices as below -
 
-
+![alt text](https://user-images.githubusercontent.com/12809431/43312593-6a6c7b0e-91ab-11e8-9861-44696af4c504.jpeg)
 
 
 Requirements
