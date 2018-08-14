@@ -1,0 +1,19 @@
+---
+# tasks file for net_operations
+- name: "check for required fact: "
+  fail:
+    msg: "Missing required fact: service id "
+  when: not net_operation.services
+
+- debug: 
+     var: device_role
+
+- name: include device role specific tasks
+  include_tasks: "{{ item }}"
+  when: device_role == 'sink'
+  with_first_found:
+    - files:
+        - verify_traffic_logs.yml
+      paths:
+        - "{{ playbook_dir }}/providers/{{ ansible_network_os }}"
+        - "{{ role_path }}/providers/{{ ansible_network_os }}"
