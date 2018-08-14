@@ -4,7 +4,7 @@
   "net_operation": {
     "services" : {
         "l3acl" : {
-            "id" : 193
+            "id" : 101
         },
         "output" : {
             "filename" : "packet_dict_193.json",
@@ -14,7 +14,12 @@
     "source" : {
         "port" : 'enp0s16',
         "gateway" : '12.1.1.20',
-        "wildcard_dest" : '13.1.1.128'
+        "wildcard_dest" : '20.20.20.20'
+    },
+    "sink" : {
+       "capture_interface": "GigabitEthernet4",
+       "capture_function": "acl_catch_all_logs",
+       "flows": "~/net_op/packet_dict_193.json"
     }
   }
 }

@@ -13,7 +13,7 @@
   when: device_role == 'sink'
   with_first_found:
     - files:
-        - parse_flow_logs.yml
+        - verify_traffic_logs.yml
       paths:
         - "{{ playbook_dir }}/providers/{{ ansible_network_os }}"
         - "{{ role_path }}/providers/{{ ansible_network_os }}"

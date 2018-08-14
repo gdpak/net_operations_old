@@ -4,10 +4,14 @@
   include_tasks: dut.yml
   when: device_role == 'dut'
 
+- name: "configure sink device before starting traffic"
+  include_tasks: config_sink.yml
+  when: device_role == 'sink'
+
 - name: "Include traffic source device playbook"
   include_tasks: source.yml
   when: device_role == 'source'
 
-- name: "Include traffic sink device platbook"
+- name: "Include traffic sink device playbook"
   include_tasks: sink.yml
   when: device_role == 'sink'
