@@ -10,10 +10,10 @@
 
 - name: include device role specific tasks
   include_tasks: "{{ item }}"
-  when: device_role == 'dut'
+  when: device_role == 'sink'
   with_first_found:
     - files:
-        - generate_packet_dict.yml
+        - parse_flow_logs.yml
       paths:
         - "{{ playbook_dir }}/providers/{{ ansible_network_os }}"
         - "{{ role_path }}/providers/{{ ansible_network_os }}"
