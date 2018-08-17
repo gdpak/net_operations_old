@@ -5,6 +5,13 @@
   vars:
     device_role: 'dut'
 
+- hosts: csr02
+  roles:
+    - net_operations
+  vars:
+    - device_role: 'sink'
+    - stage: 'pre_config'
+
 - hosts: tgn1
   roles:
     - net_operations
@@ -15,4 +22,11 @@
   roles:
     - net_operations
   vars:
-    device_role: 'sink'
+    - device_role: 'sink'
+    - stage: 'post_traffic'
+
+- hosts: localhost
+  roles:
+    - net_operations
+  vars:
+    - device_role: 'analyzer'

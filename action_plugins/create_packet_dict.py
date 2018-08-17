@@ -22,7 +22,6 @@ import os
 import time
 import re
 import hashlib
-import q
 
 from ansible.module_utils._text import to_bytes, to_text
 from ansible.module_utils.connection import Connection
@@ -125,7 +124,6 @@ class ActionModule(ActionBase):
             try:
                 p = parse(line)
             except Exception as e:
-                q(e)
                 continue
 
             if p.terms:
@@ -164,7 +162,8 @@ class ActionModule(ActionBase):
                     pd_it["dst"] = "any"
                 if not "src" in pd_it:
                     pd_it["src"] = "any"
-                pd_it["id"] = str(index) + '-' + str(uuid.uuid4())[:8]
+                pd_it["service_line_index"] = str(index)
+    #+ '-' + str(uuid.uuid4())[:8]
                 pd.append(pd_it)
 
         return json.dumps(pd, indent=4)

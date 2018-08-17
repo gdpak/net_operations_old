@@ -1,0 +1,11 @@
+---
+# tasks file for net_operations
+- name: "check for required fact: "
+  fail:
+    msg: "Missing required fact: service id "
+  when: not net_operation.services
+
+- name: Analyze flow sent and received
+  flow_analysis:
+    flows_sent: "{{ net_operation.services.output.path }}/{{ net_operation.services.output.filename }}"
+    flows_received: "{{ net_operation.sink.flow_output }}"
