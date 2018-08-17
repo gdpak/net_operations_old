@@ -24,3 +24,9 @@
   vars:
     - device_role: 'sink'
     - stage: 'post_traffic'
+
+- hosts: localhost
+  roles:
+    - net_operations
+  vars:
+    - device_role: 'analyzer'

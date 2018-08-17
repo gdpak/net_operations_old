@@ -7,7 +7,7 @@
             "id" : 101
         },
         "output" : {
-            "filename" : "packet_dict_193.json",
+            "filename" : "packet_dict_in.json",
             "path"     : "~/net_op/"
         }
     },
@@ -19,7 +19,7 @@
     "sink" : {
        "capture_interface": "GigabitEthernet4",
        "capture_function": "acl_catch_all_logs",
-       "flows": "~/net_op/packet_dict_193.json"
+       "flow_output": "~/net_op/packet_dict_out.json"
     }
   }
 }

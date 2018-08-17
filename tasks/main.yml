@@ -15,3 +15,7 @@
 - name: "Include traffic sink device playbook"
   include_tasks: sink.yml
   when: device_role == 'sink' and stage == 'post_traffic'
+
+- name: "Analyze results"
+  include_tasks: analyze.yml
+  when: device_role == 'analyzer'

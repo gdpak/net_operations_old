@@ -1,8 +1,8 @@
 ---
 # IOS providrs for handling packet dict generation
 #
-- name: Delay 5 seconds for log file to be updated
-  wait_for: timeout=5
+- name: Delay 10 seconds for log file to be updated
+  wait_for: timeout=10
 
 - name : Get logs from device
   ios_command:
@@ -19,6 +19,9 @@
     name: flows_dict
   register: result
   tags: textfsm
+
+- name: write parsed packets info to disk
+  copy: content="{{ result.ansible_facts.flows_dict | to_nice_json }}" dest="{{ net_operation.sink.flow_output }}"
 
 - debug:
     msg: "{{ result }}"
