@@ -1,5 +1,8 @@
 ---
 # IOS providrs for handling packet dict generation
+#
+- name: Delay 5 seconds for log file to be updated
+  wait_for: timeout=5
 
 - name : Get logs from device
   ios_command:

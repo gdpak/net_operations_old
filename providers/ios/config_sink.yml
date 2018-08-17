@@ -15,7 +15,15 @@
       - ip access-group ansible_sink in
     parents: interface {{ net_operation.sink.capture_interface }}
 
+- name: Configure Access-list log update interval (1 msec)
+  ios_config:
+    lines:
+      - ip access-list logging interval 1 
+
 - name: Clear the logs
   ios_command:
-    commands: 'clear loggings'
+    commands:
+      - command: 'clear logging'
+        prompt: 'Clear logging buffer'
+        answer: "\r\n"
   ignore_errors: true

@@ -3,6 +3,7 @@ Value protocol (\S+)
 Value dest_ip (\d+.\d+.\d+.\d+)
 Value dest_port (\d+)
 Value source_port (\d+)
+Value num_packets (\d+)
 
 Start
-  ^.*permitted ${protocol} ${source_ip}\(${source_port}\)(?:\s|-|>)*${dest_ip}\(${dest_port}\) -> Record
+  ^.*permitted ${protocol} ${source_ip}\(${source_port}\)(?:\s|-|>)*${dest_ip}\(${dest_port}\), ${num_packets} packet.* -> Record
