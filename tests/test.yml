@@ -4,6 +4,7 @@
     - net_operations
   vars:
     device_role: 'dut'
+    ansible_network_provider: gdpak.cisco_ios
 
 - hosts: csr02
   roles:

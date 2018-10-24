@@ -1,26 +1,32 @@
 ---
 # defaults file for net_operations
-{
-  "net_operation": {
-    "services" : {
-        "l3acl" : {
-            "id" : 101
-        },
-        "output" : {
-            "filename" : "packet_dict_in.json",
-            "path"     : "~/net_op/"
-        }
-    },
-    "source" : {
-        "port" : 'enp0s16',
-        "gateway" : '12.1.1.21',
-        "wildcard_dest" : '20.20.20.20'
-    },
-    "sink" : {
-       "capture_interface": "GigabitEthernet4",
-       "capture_function": "acl_catch_all_logs",
-       "flow_output": "~/net_op/packet_dict_out.json"
-    }
+
+#######  parameters for DUT #############################
+# unique id of ip acl
+acl_id: 101
+# path to store packet dictionary generated from acl
+generated_flow_file: '~/net_op/packet_dict_in.json'
+#########################################################
+
+"net_operation": {
+  "services" : {
+      "l3acl" : {
+          "id" : 101
+      },
+      "output" : {
+          "filename" : "packet_dict_in.json",
+          "path"     : "~/net_op/"
+      }
+  },
+  "source" : {
+      "port" : 'enp0s16',
+      "gateway" : '12.1.1.21',
+      "wildcard_dest" : '20.20.20.20'
+  },
+  "sink" : {
+     "capture_interface": "GigabitEthernet4",
+     "capture_function": "acl_catch_all_logs",
+     "flow_output": "~/net_op/packet_dict_out.json"
   }
 }
 

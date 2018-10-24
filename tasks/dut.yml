@@ -1,15 +1,10 @@
 ---
 # tasks file for net_operations
-- name: "check for required fact: "
-  fail:
-    msg: "Missing required fact: service id "
-  when: not net_operation.services
+- name: validate role spec
+  validate_role_spec:
+    spec: parse_validate_acl_spec.yaml
 
-- name: include device role specific tasks
-  include_tasks: "{{ item }}"
-  with_first_found:
-    - files:
-        - generate_packet_dict.yml
-      paths:
-        - "{{ playbook_dir }}/providers/{{ ansible_network_os }}"
-        - "{{ role_path }}/providers/{{ ansible_network_os }}"
+- name: invoke network provider
+  include_role:
+    name: "{{ ansible_network_provider }}"
+    tasks_from: net_operations/parse_validate_acl
