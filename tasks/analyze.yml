@@ -9,3 +9,7 @@
   flow_analysis:
     flows_sent: "{{ net_operation.services.output.path }}/{{ net_operation.services.output.filename }}"
     flows_received: "{{ net_operation.sink.flow_output }}"
+  register: results
+
+- name: Print the results
+  debug: msg="{{ results }}"
