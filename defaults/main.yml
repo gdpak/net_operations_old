@@ -1,32 +1,21 @@
 ---
 # defaults file for net_operations
 
-#######  parameters for DUT #############################
+#######  Parameters for DUT #############################
 # unique id of ip acl
 acl_id: 101
 # path to store packet dictionary generated from acl
 generated_flow_file: '~/net_op/packet_dict_in.json'
 #########################################################
 
-"net_operation": {
-  "services" : {
-      "l3acl" : {
-          "id" : 101
-      },
-      "output" : {
-          "filename" : "packet_dict_in.json",
-          "path"     : "~/net_op/"
-      }
-  },
-  "source" : {
-      "port" : 'enp0s16',
-      "gateway" : '12.1.1.21',
-      "wildcard_dest" : '20.20.20.20'
-  },
-  "sink" : {
-     "capture_interface": "GigabitEthernet4",
-     "capture_function": "acl_catch_all_logs",
-     "flow_output": "~/net_op/packet_dict_out.json"
-  }
-}
+##### Parameters for TGN ( Traffic Generator ) ##########
+tgn_flows_filepath: '~/net_op/packet_dict_in.json'
+tgn_out_port: 'enp0s16'
+tgn_l3_gateway: '12.1.1.21'
+tgn_wildcard_dest: '20.20.20.20'
 
+###### Parameters for packet sink device ################
+# Interface on which packets will be captured
+sink_capture_interface: "GigabitEthernet4"
+# Path to store result of parsed logs of acl capture
+sink_path_flow_output: "~/net_op/packet_dict_out.json"

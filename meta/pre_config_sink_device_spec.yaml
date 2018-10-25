@@ -1,0 +1,18 @@
+---
+argument_spec:
+  ansible_network_provider:
+    description:
+      - This value is used to determine the correct role to implement the
+        pre_config_sink_device function. The network device provider role is responsible
+        for performing the actual implementation of configuring packet capture pre-requisites.
+        The specified role must be installed and accesible via the configured
+        ansible_role_path setting.
+    required: True
+
+  sink_capture_interface:
+    description:
+      - value of the interface which will be used to capture test packets from
+        network. Current implementation is to capture packets from this interface
+        using a catch-all ACL on this interface and then parsing logs for captured
+        packets.
+    required: True

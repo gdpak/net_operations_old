@@ -1,0 +1,13 @@
+---
+argument_spec:
+  ansible_network_provider:
+    description:
+      - This value is used to determine the correct role to implement the
+        packet capture function. The specified role must be installed and
+        accesible via the configured ansible_role_path setting.
+    required: True
+
+  sink_path_flow_output:
+    description:
+      - Local absolute filepath to store parsed results of ACL logs.
+    required: True

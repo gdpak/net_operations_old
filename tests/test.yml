@@ -10,21 +10,24 @@
   roles:
     - net_operations
   vars:
-    - device_role: 'sink'
-    - stage: 'pre_config'
+    device_role: 'sink'
+    stage: 'pre_config'
+    ansible_network_provider: gdpak.cisco_ios
 
 - hosts: tgn1
   roles:
     - net_operations
   vars:
     device_role: 'source'
+    ansible_network_provider: gdpak.linux_tgn
 
 - hosts: csr02
   roles:
     - net_operations
   vars:
-    - device_role: 'sink'
-    - stage: 'post_traffic'
+    device_role: 'sink'
+    stage: 'post_traffic'
+    ansible_network_provider: gdpak.cisco_ios
 
 - hosts: localhost
   roles:

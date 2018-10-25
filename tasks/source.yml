@@ -1,18 +1,10 @@
 ---
 # tasks file for net_operations
-- name: "check for required fact: "
-  fail:
-    msg: "Missing required fact: service id "
-  when: not net_operation.services
+- name: validate we have everything to send packets
+  validate_role_spec:
+    spec: packets_send_spec.yaml
 
-- debug:
-    var: ansible_distribution
-
-- name: include device role specific tasks
-  include_tasks: "{{ item }}"
-  with_first_found:
-    - files:
-        - send_traffic.yml
-      paths:
-        - "{{ playbook_dir }}/providers/{{ ansible_distribution }}"
-        - "{{ role_path }}/providers/{{ ansible_distribution }}"
+- name: Invoke provider role to send packets
+  include_role:
+    name: "{{ ansible_network_provider }}"
+    tasks_from: packets_send

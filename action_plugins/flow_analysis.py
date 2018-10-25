@@ -43,7 +43,7 @@ class ActionModule(ActionBase):
 
         result = super(ActionModule, self).run(task_vars=task_vars)
 
-        self.any_dest_ip = task_vars.get("net_operation").get("source").get("wildcard_dest")
+        self.any_dest_ip = self._task.args.get('wildcard_host')
         try:
             flow_in = self._task.args.get('flows_sent')
         except KeyError as exc:

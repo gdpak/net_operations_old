@@ -1,14 +1,14 @@
 ---
 # tasks file for net_operations
-- name: "check for required fact: "
-  fail:
-    msg: "Missing required fact: service id "
-  when: not net_operation.services
+- name: validate we have everything to analyze results
+  validate_role_spec:
+      spec: flow_analysis_spec.yaml
 
 - name: Analyze flow sent and received
   flow_analysis:
-    flows_sent: "{{ net_operation.services.output.path }}/{{ net_operation.services.output.filename }}"
-    flows_received: "{{ net_operation.sink.flow_output }}"
+    flows_sent: "{{ generated_flow_file }}"
+    flows_received: "{{ sink_path_flow_output }}"
+    wildcard_host: "{{ tgn_wildcard_dest }}"
   register: results
 
 - name: Print the results

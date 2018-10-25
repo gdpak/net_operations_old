@@ -1,8 +1,0 @@
----
-# IOS providrs for handling packet dict generation
-
-- name : Create packet dict based on service data on device
-  create_packet_dict:
-      command: "show running-config | i access-list {{ net_operation.services.l3acl.id }}"
-      filename: "{{ net_operation.services.output.filename }}"
-      path: "{{ net_operation.services.output.path }}"

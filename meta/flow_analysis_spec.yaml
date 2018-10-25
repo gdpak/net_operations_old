@@ -1,0 +1,26 @@
+---
+argument_spec:
+  generated_flow_file:
+    description:
+      - This file specifies flows which were sent from device. Normally this is
+        auto generated file from parsing of service on DUT e.g. flow dict from
+        parsing of an ACL
+    required: True
+
+  sink_path_flow_output:
+    description:
+      - This value specifies a filepath containing flows captured from sink
+        device. Normally this is auto-generated file from sink device after
+        parsing packet captures
+    required: True
+  
+  tgn_wildcard_dest:
+    description:
+      - This value is used to identify an internet host. A service (e.g. ACL) might be
+        used to control access to internet. A destination ip would be 'any' in that case.
+        traffic generator would use this value to verify access to internet is working as
+        intended. This option is required only if your service has 'any' type of destination
+        ip to be tested
+    required: False
+
+
