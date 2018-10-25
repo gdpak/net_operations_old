@@ -101,10 +101,10 @@ class ActionModule(ActionBase):
         for flow_in in fin:
             n = self.find_match(fout, flow_in['src'], flow_in['dst'],
                            flow_in['dst_port'], flow_in.get('src_port'))
-            if flow_in['action'] == 'reject' and n > 0:
+            if flow_in['action'] == 'deny' and n > 0:
                self.anamolies.append("Found packet on sink which should be"
                        " rejected - %s" % json.dumps(flow_in))
-            elif flow_in['action'] == 'accept' and n == 0:
+            elif flow_in['action'] == 'permit' and n == 0:
                self.anamolies.append("Could not find packet on sink which"
                        " should be passed - %s" % json.dumps(flow_in))
             else:
